@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COPROLOGIA - Laboratorio Esperanza</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.2em;
+        }
+        .header .subtitle {
+            color: #7f8c8d;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        .exam-title {
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 30px 0;
+            text-transform: uppercase;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .results-table th {
+            background-color: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .results-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #bdc3c7;
+        }
+        .results-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .exam-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        .exam-label {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        .exam-value {
+            color: #34495e;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+        .positive {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .negative {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #bdc3c7;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>COPROLOGIA</h1>
+            <div class="subtitle">Laboratorio Esperanza</div>
+        </div>
+        
+        <div class="exam-title">EXAMEN</div>
+        
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>EXAMEN</th>
+                    <th>RESULTADO</th>
+                    <th>RANGOS DE REFERENCIA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Helicobacter pylori ANTIGENO EN HECES:</strong></td>
+                    <td class="positive">POSITIVO</td>
+                    <td class="negative">NEGATIVO</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div class="footer">
+            <p>Documento generado el 22/09/2025 a las 21:55</p>
+            <p>Laboratorio Esperanza - Sistema de Gestión de Laboratorio</p>
+        </div>
+    </div>
+</body>
+</html>

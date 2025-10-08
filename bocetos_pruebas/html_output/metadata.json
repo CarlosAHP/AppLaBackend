@@ -1,0 +1,338 @@
+{
+  "categories": {
+    "heces": {
+      "name": "Heces",
+      "description": "Análisis de heces y coprología",
+      "files": [
+        "heces_completa.html",
+        "coprologia.html",
+        "orina_completa.html"
+      ]
+    },
+    "hematologia": {
+      "name": "Hematología",
+      "description": "Análisis de sangre y componentes sanguíneos",
+      "files": [
+        "hematologia_completa.html",
+        "inmunologia_salmonella.html",
+        "inmunologia_dengue.html",
+        "bioquimica_completa.html",
+        "pruebas_tiroideas.html",
+        "bioquimica_hepatica.html"
+      ]
+    },
+    "quimica_clinica": {
+      "name": "Química Clínica",
+      "description": "Análisis bioquímicos y metabólicos",
+      "files": [
+        "bioquimica_basica.html",
+        "bioquimica_completa.html",
+        "bioquimica_hepatica.html",
+        "pruebas_renales.html",
+        "curva_tolerancia_glucosa.html",
+        "curva_insulina.html",
+        "quimica_clinica_proteinas.html",
+        "urologia_microalbumina.html",
+        "cardiovasculares_troponinas.html",
+        "urologia_24h.html",
+        "urologia_al_azar.html",
+        "cardiovasculares_probnp.html",
+        "urologia_depuracion.html",
+        "aldolasa.html",
+        "lactato.html",
+        "peptido_c.html",
+        "homocisteina.html",
+        "hierro_serico.html",
+        "ferrocenica_basica.html",
+        "ferritina.html",
+        "proteinas_orina_simple.html",
+        "calcio_orina.html",
+        "acido_urico_orina.html"
+      ]
+    },
+    "enzimas": {
+      "name": "Enzimas",
+      "description": "Análisis de enzimas corporales",
+      "files": [
+        "enzimas_generales.html",
+        "enzimas_pancreaticas.html",
+        "enzimas_cardiacas.html",
+        "fosfatasa_alcalina_detallada.html",
+        "colinesterasa.html"
+      ]
+    },
+    "electrolitos": {
+      "name": "Electrolitos",
+      "description": "Análisis de electrolitos y minerales",
+      "files": [
+        "electrolitos_basicos.html",
+        "electrolitos_ultralab.html",
+        "pruebas_ferroceneticas.html"
+      ]
+    },
+    "hormonas": {
+      "name": "Hormonas",
+      "description": "Análisis hormonales y de embarazo",
+      "files": [
+        "prueba_embarazo.html"
+      ]
+    },
+    "infecciosas": {
+      "name": "Infecciosas",
+      "description": "Análisis de enfermedades infecciosas",
+      "files": [
+        "inmunologia_basica.html",
+        "inmunologia_avanzada.html",
+        "inmunologia_reumatoide.html",
+        "inmunologia_hepatitis.html",
+        "hepatitis_basica.html",
+        "hepatitis_avanzada.html",
+        "hepatitis_a_igg.html",
+        "hepatitis_a_igm_igg.html",
+        "hepatitis_a_positivo.html",
+        "hepatitis_b_anti_hbc_igm.html",
+        "hepatitis_c.html",
+        "salmonella_typhi.html",
+        "salmonella_typhi_avanzado.html",
+        "dengue.html",
+        "chikungunya.html",
+        "malaria.html",
+        "leptospira.html",
+        "anti_tuberculosis.html",
+        "anti_cisticerco.html",
+        "chlamydia_trachomatis.html",
+        "hiv_elisa.html",
+        "torch_igg.html",
+        "torch_igm.html",
+        "torch_igm_radio.html",
+        "torch_igg_ultralab.html",
+        "torch_igg_ultralab_completo.html",
+        "torch_completo.html",
+        "toxoplasma_gondii_igg.html",
+        "toxoplasma_gondii_igm.html",
+        "toxoplasma_gondii_radio.html",
+        "toxoplasma_gondii_igg_biolab.html",
+        "toxoplasma_gondii_igm_biolab.html",
+        "toxoplasma_gondii_igg_ultralab.html",
+        "toxoplasma_gondii_igm_ultralab.html",
+        "citomegalovirus_igg.html",
+        "citomegalovirus_igm.html",
+        "rubeola_igm.html",
+        "rubeola_radio.html",
+        "epstein_barr_igg.html",
+        "epstein_barr_igm.html",
+        "epstein_barr_igg_ultralab.html",
+        "epstein_barr_igm_ultralab.html",
+        "herpes_simplex_ii_igg.html",
+        "herpes_simplex_ii_igm.html",
+        "herpes_simplex_igg_biolab.html",
+        "influenza.html"
+      ]
+    },
+    "endocrinologia": {
+      "name": "Endocrinología",
+      "description": "Análisis endocrinológicos y hormonales",
+      "files": [
+        "pruebas_tiroideas_basicas.html",
+        "pruebas_tiroideas_avanzadas.html",
+        "pruebas_tiroideas.html",
+        "tiroglobulinas.html",
+        "fta_abs.html",
+        "relacion_libre_total.html",
+        "relacion_libre_total_biolab.html",
+        "hormonas_fertilidad_basicas.html",
+        "hormonas_fertilidad_avanzadas.html",
+        "hormonas_fertilidad_abesco.html",
+        "testosterona.html",
+        "testosterona_libre_total.html",
+        "estradiol_avanzado.html",
+        "hormona_crecimiento.html",
+        "hormona_crecimiento_avanzada.html",
+        "parathormona.html",
+        "cortisol_am.html",
+        "cortisol_am_pm.html",
+        "acth.html",
+        "acth_am_pm.html",
+        "insulina_preprandial.html",
+        "insulina_postprandial.html",
+        "resistencia_insulina.html"
+      ]
+    },
+    "marcadores_tumorales": {
+      "name": "Marcadores Tumorales",
+      "description": "Análisis de marcadores tumorales",
+      "files": [
+        "proteinas_neoplasicas_basicas.html",
+        "proteinas_neoplasicas_avanzadas.html",
+        "alfa_fetoproteina.html",
+        "alfa_fetoproteina_biolab.html",
+        "ca_125.html",
+        "ca_125_biolab.html",
+        "ca_15_3_basico.html",
+        "ca_15_3_biolab.html",
+        "ca_19_9_basico.html",
+        "ca_19_9_biolab.html",
+        "cea_biolab.html",
+        "psa_esperanza.html",
+        "psa_biolab.html"
+      ]
+    },
+    "coagulacion": {
+      "name": "Coagulación",
+      "description": "Análisis de coagulación sanguínea",
+      "files": [
+        "coagulacion_basica.html",
+        "tiempos_coagulacion.html",
+        "fibrinogeno.html",
+        "anticuagulante_lupico.html",
+        "proteina_c.html"
+      ]
+    },
+    "tipo_sangre": {
+      "name": "Tipo de Sangre",
+      "description": "Determinación de grupo sanguíneo y factor Rh",
+      "files": [
+        "grupo_rh.html"
+      ]
+    },
+    "cultivos": {
+      "name": "Cultivos",
+      "description": "Análisis microbiológicos y cultivos",
+      "files": [
+        "urocultivo_negativo.html",
+        "urocultivo_positivo.html",
+        "orocultivo.html",
+        "secrecion_vaginal.html",
+        "coprocultivo.html"
+      ]
+    },
+    "frote_periferico": {
+      "name": "Frote Periférico",
+      "description": "Análisis de frote periférico y clasificación de anemia",
+      "files": [
+        "frote_periferico.html",
+        "clasificacion_anemia.html",
+        "gota_gruesa.html"
+      ]
+    },
+    "helicobacter": {
+      "name": "Helicobacter",
+      "description": "Análisis de Helicobacter pylori y coprología",
+      "files": [
+        "helicobacter_antigeno_heces.html",
+        "azul_metileno.html",
+        "transferrina_heces.html",
+        "virus_heces.html",
+        "sangre_oculta_heces.html",
+        "helicobacter_igm_1.html",
+        "helicobacter_igg_1.html",
+        "helicobacter_igm_igg_2.html",
+        "panel_parasitos.html",
+        "clostridium_difficile.html",
+        "clinitest_1.html",
+        "clinitest_2.html",
+        "clinitest_sudan_calprotectina.html",
+        "helicobacter_igg_3.html"
+      ]
+    },
+    "microbiologia": {
+      "name": "Microbiología",
+      "description": "Análisis microbiológicos y pruebas de laboratorio",
+      "files": [
+        "ziehl_neelsen_esputo.html",
+        "bk_esputo_1.html",
+        "bk_esputo_2.html",
+        "bk_esputo_3.html",
+        "koh_lesiones_piel.html",
+        "microscopia_azul_metileno.html"
+      ]
+    },
+    "espermograma": {
+      "name": "Espermograma",
+      "description": "Análisis completo de espermatograma",
+      "files": [
+        "espermograma.html"
+      ]
+    },
+    "tarjeta_salud": {
+      "name": "Tarjeta de Salud",
+      "description": "Análisis completo para tarjeta de salud",
+      "files": [
+        "inmunologia_infecciosa.html",
+        "hepatitis.html",
+        "heces_completa.html",
+        "orina_completa.html"
+      ]
+    },
+    "drogas": {
+      "name": "Drogas Terapéuticas",
+      "description": "Análisis de niveles de drogas terapéuticas",
+      "files": [
+        "acido_valproico_1.html",
+        "acido_valproico_fenitoina.html"
+      ]
+    },
+    "paquete_prenatal_wendy": {
+      "name": "Paquete Prenatal Dra. Wendy",
+      "description": "Paquete completo de análisis prenatal para Dra. Wendy Madrid",
+      "files": [
+        "hematologia_wendy.html",
+        "tipo_sangre_wendy.html",
+        "bioquimica_wendy.html",
+        "inmunologia_infecciosa_wendy.html",
+        "hepatitis_wendy.html",
+        "orina_completa_wendy.html"
+      ]
+    },
+    "paquete_prenatal": {
+      "name": "Paquete Prenatal",
+      "description": "Paquete completo de análisis prenatal estándar",
+      "files": [
+        "hematologia_prenatal.html",
+        "tipo_sangre_prenatal.html",
+        "bioquimica_prenatal.html",
+        "inmunologia_infecciosa_prenatal.html",
+        "hepatitis_prenatal.html",
+        "heces_completa_prenatal.html",
+        "orina_completa_prenatal.html"
+      ]
+    },
+    "paquete_covid": {
+      "name": "Paquete COVID-19",
+      "description": "Paquete completo de análisis para COVID-19",
+      "files": [
+        "hematologia_covid.html",
+        "bioquimica_covid.html",
+        "inmunologia_covid.html",
+        "proteinas_neoplasicas_covid.html",
+        "coagulacion_covid.html",
+        "enzimas_covid.html",
+        "interleucina_covid.html"
+      ]
+    },
+    "paquete_dengue": {
+      "name": "Paquete Dengue",
+      "description": "Paquete completo de análisis para Dengue",
+      "files": [
+        "hematologia_dengue.html",
+        "inmunologia_dengue.html",
+        "orina_completa_dengue.html"
+      ]
+    },
+    "veterinaria": {
+      "name": "Veterinaria",
+      "description": "Análisis de laboratorio para animales",
+      "files": [
+        "hematologia_canino.html",
+        "bioquimica_canino.html",
+        "bioquimica_hepatica_canino.html",
+        "hematologia_felino.html",
+        "bioquimica_felino.html",
+        "bioquimica_hepatica_felino.html",
+        "bilirrubinas_felino.html"
+      ]
+    }
+  },
+  "last_updated": "2025-01-23T12:50:00Z",
+  "total_files": 218
+}

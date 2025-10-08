@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración Frontend - Pruebas de Laboratorio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 2.2em;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #34495e;
+            border-left: 4px solid #3498db;
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+        .code-block {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .code-block pre {
+            margin: 0;
+            font-family: 'Courier New', monospace;
+        }
+        .endpoint {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .endpoint h4 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .method {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #ecf0f1;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        .example-response {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        .example-response h5 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .example-response pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .integration-steps {
+            background: #fff3e0;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .integration-steps h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .integration-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .integration-steps li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 Integración Frontend - Pruebas de Laboratorio</h1>
+            <p>Guía para integrar las pruebas de laboratorio HTML con el frontend</p>
+        </div>
+        
+        <div class="section">
+            <h2>📡 Endpoints Disponibles</h2>
+            
+            <div class="endpoint">
+                <h4><span class="method">GET</span> Listar todas las pruebas</h4>
+                <p><span class="url">/api/lab-tests/list</span></p>
+                <p>Obtiene la lista completa de pruebas de laboratorio disponibles</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method">GET</span> Obtener categorías</h4>
+                <p><span class="url">/api/lab-tests/categories</span></p>
+                <p>Obtiene las categorías de pruebas organizadas por tipo</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method">GET</span> Buscar pruebas</h4>
+                <p><span class="url">/api/lab-tests/search?q=&lt;término&gt;</span></p>
+                <p>Busca pruebas por nombre o término específico</p>
+            </div>
+            
+            <div class="endpoint">
+                <h4><span class="method">GET</span> Servir archivo HTML</h4>
+                <p><span class="url">/api/lab-tests/html/&lt;filename&gt;</span></p>
+                <p>Sirve un archivo HTML específico de prueba de laboratorio</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💻 Ejemplos de Uso en JavaScript</h2>
+            
+            <h3>1. Listar todas las pruebas</h3>
+            <div class="code-block">
+                <pre>// Obtener token de autenticación
+const token = localStorage.getItem('auth_token');
+
+// Listar todas las pruebas
+fetch('/api/lab-tests/list', {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log('Pruebas disponibles:', data.data);
+        // Mostrar en la interfaz
+        displayLabTests(data.data);
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+});</pre>
+            </div>
+            
+            <h3>2. Obtener categorías</h3>
+            <div class="code-block">
+                <pre>// Obtener categorías
+fetch('/api/lab-tests/categories', {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log('Categorías:', data.data);
+        // Organizar por categorías
+        displayCategories(data.data);
+    }
+});</pre>
+            </div>
+            
+            <h3>3. Buscar pruebas</h3>
+            <div class="code-block">
+                <pre>// Buscar pruebas
+const searchTerm = 'heces';
+fetch(`/api/lab-tests/search?q=${searchTerm}`, {
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        console.log('Resultados:', data.data);
+        // Mostrar resultados de búsqueda
+        displaySearchResults(data.data);
+    }
+});</pre>
+            </div>
+            
+            <h3>4. Mostrar prueba HTML</h3>
+            <div class="code-block">
+                <pre>// Mostrar prueba HTML en iframe
+function showLabTest(filename) {
+    const iframe = document.getElementById('lab-test-iframe');
+    iframe.src = `/api/lab-tests/html/${filename}`;
+    iframe.style.display = 'block';
+}
+
+// O abrir en nueva ventana
+function openLabTest(filename) {
+    window.open(`/api/lab-tests/html/${filename}`, '_blank');
+}
+
+// O cargar en div
+function loadLabTestInDiv(filename, containerId) {
+    fetch(`/api/lab-tests/html/${filename}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.text())
+    .then(html => {
+        document.getElementById(containerId).innerHTML = html;
+    });</pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📱 Ejemplo de Interfaz</h2>
+            
+            <div class="code-block">
+                <pre>&lt;!-- HTML de ejemplo --&gt;
+&lt;div class="lab-tests-container"&gt;
+    &lt;div class="search-section"&gt;
+        &lt;input type="text" id="search-input" placeholder="Buscar prueba..."&gt;
+        &lt;button onclick="searchTests()"&gt;Buscar&lt;/button&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="categories-section"&gt;
+        &lt;h3&gt;Categorías&lt;/h3&gt;
+        &lt;div id="categories-list"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="tests-section"&gt;
+        &lt;h3&gt;Pruebas Disponibles&lt;/h3&gt;
+        &lt;div id="tests-list"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    
+    &lt;div class="test-viewer"&gt;
+        &lt;iframe id="lab-test-iframe" style="display: none;"&gt;&lt;/iframe&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</pre>
+            </div>
+        </div>
+        
+        <div class="integration-steps">
+            <h3>🚀 Pasos para Integración</h3>
+            <ol>
+                <li><strong>Autenticación:</strong> Asegúrate de tener un token válido</li>
+                <li><strong>Listar pruebas:</strong> Usa <code>/api/lab-tests/list</code> para obtener todas las pruebas</li>
+                <li><strong>Mostrar categorías:</strong> Usa <code>/api/lab-tests/categories</code> para organizar por tipo</li>
+                <li><strong>Implementar búsqueda:</strong> Usa <code>/api/lab-tests/search</code> para buscar pruebas</li>
+                <li><strong>Mostrar HTML:</strong> Usa <code>/api/lab-tests/html/&lt;filename&gt;</code> para mostrar la prueba</li>
+                <li><strong>Manejar errores:</strong> Implementa manejo de errores para archivos no encontrados</li>
+            </ol>
+        </div>
+        
+        <div class="section">
+            <h2>📋 Respuestas de Ejemplo</h2>
+            
+            <div class="example-response">
+                <h5>Respuesta de /api/lab-tests/list</h5>
+                <pre>{
+  "success": true,
+  "data": [
+    {
+      "filename": "heces_completa.html",
+      "name": "heces_completa",
+      "url": "/api/lab-tests/html/heces_completa.html",
+      "size": 15420,
+      "modified": 1695123456.789
+    }
+  ],
+  "total": 32
+}</pre>
+            </div>
+            
+            <div class="example-response">
+                <h5>Respuesta de /api/lab-tests/categories</h5>
+                <pre>{
+  "success": true,
+  "data": {
+    "Hematología": [
+      "3. HEMATOLOGIA.html",
+      "15. FROTE PERIFERICO, CLASIFICACION DE ANEMIA.html"
+    ],
+    "Bioquímica": [
+      "4. QUIMICA CLINICA.html",
+      "5. ENZIMAS.html"
+    ]
+  }
+}</pre>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Consideraciones Importantes</h2>
+            <ul>
+                <li><strong>Autenticación:</strong> Todos los endpoints requieren token de autenticación</li>
+                <li><strong>CORS:</strong> Asegúrate de que CORS esté configurado correctamente</li>
+                <li><strong>Manejo de errores:</strong> Implementa manejo de errores 404, 500, etc.</li>
+                <li><strong>Loading states:</strong> Muestra indicadores de carga mientras se cargan los archivos</li>
+                <li><strong>Responsive:</strong> Los archivos HTML son responsive, pero asegúrate de que tu contenedor también lo sea</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
