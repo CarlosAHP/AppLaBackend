@@ -350,3 +350,7 @@ El sistema de reportes está completamente implementado y listo para usar. Inclu
 El sistema está diseñado para ser escalable, seguro y fácil de mantener.
 
 
+
+
+
+

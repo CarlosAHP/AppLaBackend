@@ -3,345 +3,478 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integración Frontend - Pruebas de Laboratorio</title>
+    <title>Laboratorio Esperanza - Gestión de Resultados</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            margin: 0;
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
         }
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
             background: white;
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         .header {
             text-align: center;
-            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 30px;
             padding-bottom: 20px;
-            margin-bottom: 30px;
+            border-bottom: 2px solid #007bff;
         }
-        .header h1 {
-            color: #2c3e50;
-            margin: 0;
-            font-size: 2.2em;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .section h2 {
-            color: #34495e;
-            border-left: 4px solid #3498db;
-            padding-left: 15px;
-            margin-bottom: 15px;
-        }
-        .code-block {
-            background: #2c3e50;
-            color: #ecf0f1;
+        .dashboard-stats {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
             padding: 20px;
+            background-color: #f8f9fa;
             border-radius: 8px;
-            overflow-x: auto;
-            margin: 15px 0;
         }
-        .code-block pre {
-            margin: 0;
-            font-family: 'Courier New', monospace;
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: white;
+            border: 1px solid #ddd;
+            flex: 1;
         }
-        .endpoint {
-            background: #e8f4fd;
-            border-left: 4px solid #3498db;
+        .stat-number {
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-label {
+            display: block;
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .pending-files-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .pending-file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             padding: 15px;
             margin: 10px 0;
-            border-radius: 0 8px 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: white;
+            border-left: 4px solid #ffc107;
         }
-        .endpoint h4 {
-            margin-top: 0;
-            color: #2c3e50;
+        .file-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
-        .method {
-            display: inline-block;
-            background: #27ae60;
-            color: white;
+        .file-header h4 {
+            margin: 0;
+            color: #333;
+        }
+        .status-badge {
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 0.8em;
+            font-size: 12px;
             font-weight: bold;
-            margin-right: 10px;
         }
-        .url {
-            font-family: 'Courier New', monospace;
-            background: #ecf0f1;
-            padding: 2px 6px;
-            border-radius: 3px;
+        .status-badge.pending {
+            background-color: #fff3cd;
+            color: #856404;
         }
-        .example-response {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
+        .file-info {
+            flex: 1;
+            margin-right: 20px;
         }
-        .example-response h5 {
-            margin-top: 0;
-            color: #2c3e50;
+        .file-info p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
         }
-        .example-response pre {
-            background: #2c3e50;
-            color: #ecf0f1;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin: 10px 0;
+        .file-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        .integration-steps {
-            background: #fff3e0;
-            border-left: 4px solid #f39c12;
+        .btn-view, .btn-complete, .btn-cancel {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-view {
+            background-color: #17a2b8;
+            color: white;
+        }
+        .btn-complete {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-view:hover {
+            background-color: #138496;
+        }
+        .btn-complete:hover {
+            background-color: #218838;
+        }
+        .btn-cancel:hover {
+            background-color: #c82333;
+        }
+        .loading {
+            text-align: center;
             padding: 20px;
-            margin: 20px 0;
-            border-radius: 0 8px 8px 0;
+            color: #666;
         }
-        .integration-steps h3 {
-            margin-top: 0;
-            color: #2c3e50;
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
         }
-        .integration-steps ol {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .integration-steps li {
-            margin-bottom: 10px;
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🔗 Integración Frontend - Pruebas de Laboratorio</h1>
-            <p>Guía para integrar las pruebas de laboratorio HTML con el frontend</p>
+            <h1>📋 Gestión de Resultados - Laboratorio Esperanza</h1>
+            <p>Sistema de gestión de archivos HTML del frontend</p>
         </div>
         
-        <div class="section">
-            <h2>📡 Endpoints Disponibles</h2>
-            
-            <div class="endpoint">
-                <h4><span class="method">GET</span> Listar todas las pruebas</h4>
-                <p><span class="url">/api/lab-tests/list</span></p>
-                <p>Obtiene la lista completa de pruebas de laboratorio disponibles</p>
+        <!-- Dashboard -->
+        <div class="dashboard-stats">
+            <div class="stat-item">
+                <span class="stat-number" id="total-files">0</span>
+                <span class="stat-label">Total de Archivos</span>
+            </div>
+            <div class="stat-item pending">
+                <span class="stat-number" id="pending-count">0</span>
+                <span class="stat-label">Pendientes</span>
+            </div>
+            <div class="stat-item completed">
+                <span class="stat-number" id="completed-count">0</span>
+                <span class="stat-label">Completados</span>
+            </div>
+            <div class="stat-item cancelled">
+                <span class="stat-number" id="cancelled-count">0</span>
+                <span class="stat-label">Cancelados</span>
+            </div>
             </div>
             
-            <div class="endpoint">
-                <h4><span class="method">GET</span> Obtener categorías</h4>
-                <p><span class="url">/api/lab-tests/categories</span></p>
-                <p>Obtiene las categorías de pruebas organizadas por tipo</p>
-            </div>
-            
-            <div class="endpoint">
-                <h4><span class="method">GET</span> Buscar pruebas</h4>
-                <p><span class="url">/api/lab-tests/search?q=&lt;término&gt;</span></p>
-                <p>Busca pruebas por nombre o término específico</p>
-            </div>
-            
-            <div class="endpoint">
-                <h4><span class="method">GET</span> Servir archivo HTML</h4>
-                <p><span class="url">/api/lab-tests/html/&lt;filename&gt;</span></p>
-                <p>Sirve un archivo HTML específico de prueba de laboratorio</p>
+        <!-- Archivos Pendientes -->
+        <div class="pending-files-section">
+            <h3>📋 Archivos Pendientes</h3>
+            <div id="pending-files-container">
+                <div class="loading">Cargando archivos pendientes...</div>
             </div>
         </div>
         
-        <div class="section">
-            <h2>💻 Ejemplos de Uso en JavaScript</h2>
-            
-            <h3>1. Listar todas las pruebas</h3>
-            <div class="code-block">
-                <pre>// Obtener token de autenticación
-const token = localStorage.getItem('auth_token');
+        <!-- Mensajes -->
+        <div id="message-container"></div>
+    </div>
 
-// Listar todas las pruebas
-fetch('/api/lab-tests/list', {
-    headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-    }
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log('Pruebas disponibles:', data.data);
-        // Mostrar en la interfaz
-        displayLabTests(data.data);
-    }
-})
-.catch(error => {
-    console.error('Error:', error);
-});</pre>
-            </div>
+    <script>
+        // Configuración
+        const API_BASE_URL = 'http://localhost:5000/api/frontend-html';
+        const TOKEN = 'your-jwt-token-here'; // Reemplazar con token real
+        
+        // Función para mostrar mensajes
+        function showMessage(message, type = 'info') {
+            const container = document.getElementById('message-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type;
+            messageDiv.textContent = message;
+            container.appendChild(messageDiv);
             
-            <h3>2. Obtener categorías</h3>
-            <div class="code-block">
-                <pre>// Obtener categorías
-fetch('/api/lab-tests/categories', {
-    headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-    }
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log('Categorías:', data.data);
-        // Organizar por categorías
-        displayCategories(data.data);
-    }
-});</pre>
-            </div>
-            
-            <h3>3. Buscar pruebas</h3>
-            <div class="code-block">
-                <pre>// Buscar pruebas
-const searchTerm = 'heces';
-fetch(`/api/lab-tests/search?q=${searchTerm}`, {
-    headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-    }
-})
-.then(response => response.json())
-.then(data => {
-    if (data.success) {
-        console.log('Resultados:', data.data);
-        // Mostrar resultados de búsqueda
-        displaySearchResults(data.data);
-    }
-});</pre>
-            </div>
-            
-            <h3>4. Mostrar prueba HTML</h3>
-            <div class="code-block">
-                <pre>// Mostrar prueba HTML en iframe
-function showLabTest(filename) {
-    const iframe = document.getElementById('lab-test-iframe');
-    iframe.src = `/api/lab-tests/html/${filename}`;
-    iframe.style.display = 'block';
-}
-
-// O abrir en nueva ventana
-function openLabTest(filename) {
-    window.open(`/api/lab-tests/html/${filename}`, '_blank');
-}
-
-// O cargar en div
-function loadLabTestInDiv(filename, containerId) {
-    fetch(`/api/lab-tests/html/${filename}`, {
-        headers: {
-            'Authorization': `Bearer ${token}`
+            // Remover mensaje después de 5 segundos
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
         }
-    })
-    .then(response => response.text())
-    .then(html => {
-        document.getElementById(containerId).innerHTML = html;
-    });</pre>
-            </div>
-        </div>
         
-        <div class="section">
-            <h2>📱 Ejemplo de Interfaz</h2>
-            
-            <div class="code-block">
-                <pre>&lt;!-- HTML de ejemplo --&gt;
-&lt;div class="lab-tests-container"&gt;
-    &lt;div class="search-section"&gt;
-        &lt;input type="text" id="search-input" placeholder="Buscar prueba..."&gt;
-        &lt;button onclick="searchTests()"&gt;Buscar&lt;/button&gt;
-    &lt;/div&gt;
-    
-    &lt;div class="categories-section"&gt;
-        &lt;h3&gt;Categorías&lt;/h3&gt;
-        &lt;div id="categories-list"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    
-    &lt;div class="tests-section"&gt;
-        &lt;h3&gt;Pruebas Disponibles&lt;/h3&gt;
-        &lt;div id="tests-list"&gt;&lt;/div&gt;
-    &lt;/div&gt;
-    
-    &lt;div class="test-viewer"&gt;
-        &lt;iframe id="lab-test-iframe" style="display: none;"&gt;&lt;/iframe&gt;
-    &lt;/div&gt;
-&lt;/div&gt;</pre>
-            </div>
-        </div>
+        // Obtener archivos pendientes
+        async function getPendingFiles() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/pending?limit=20`, {
+    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al obtener archivos pendientes:', error);
+                throw error;
+            }
+        }
         
-        <div class="integration-steps">
-            <h3>🚀 Pasos para Integración</h3>
-            <ol>
-                <li><strong>Autenticación:</strong> Asegúrate de tener un token válido</li>
-                <li><strong>Listar pruebas:</strong> Usa <code>/api/lab-tests/list</code> para obtener todas las pruebas</li>
-                <li><strong>Mostrar categorías:</strong> Usa <code>/api/lab-tests/categories</code> para organizar por tipo</li>
-                <li><strong>Implementar búsqueda:</strong> Usa <code>/api/lab-tests/search</code> para buscar pruebas</li>
-                <li><strong>Mostrar HTML:</strong> Usa <code>/api/lab-tests/html/&lt;filename&gt;</code> para mostrar la prueba</li>
-                <li><strong>Manejar errores:</strong> Implementa manejo de errores para archivos no encontrados</li>
-            </ol>
-        </div>
+        // Obtener estadísticas
+        async function getStatusStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/status-stats`, {
+    headers: {
+                        'Authorization': `Bearer ${TOKEN}`
+                    }
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.data;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al obtener estadísticas:', error);
+                throw error;
+            }
+        }
         
-        <div class="section">
-            <h2>📋 Respuestas de Ejemplo</h2>
-            
-            <div class="example-response">
-                <h5>Respuesta de /api/lab-tests/list</h5>
-                <pre>{
-  "success": true,
-  "data": [
-    {
-      "filename": "heces_completa.html",
-      "name": "heces_completa",
-      "url": "/api/lab-tests/html/heces_completa.html",
-      "size": 15420,
-      "modified": 1695123456.789
-    }
-  ],
-  "total": 32
-}</pre>
-            </div>
-            
-            <div class="example-response">
-                <h5>Respuesta de /api/lab-tests/categories</h5>
-                <pre>{
-  "success": true,
-  "data": {
-    "Hematología": [
-      "3. HEMATOLOGIA.html",
-      "15. FROTE PERIFERICO, CLASIFICACION DE ANEMIA.html"
-    ],
-    "Bioquímica": [
-      "4. QUIMICA CLINICA.html",
-      "5. ENZIMAS.html"
-    ]
-  }
-}</pre>
-            </div>
-        </div>
+        // Mostrar archivos pendientes
+        async function displayPendingFiles() {
+            try {
+                const container = document.getElementById('pending-files-container');
+                container.innerHTML = '<div class="loading">Cargando archivos pendientes...</div>';
+                
+                const pendingFiles = await getPendingFiles();
+                
+                if (pendingFiles.length === 0) {
+                    container.innerHTML = '<p>No hay archivos pendientes</p>';
+                    return;
+                }
+                
+                container.innerHTML = '';
+                
+                pendingFiles.forEach((file, index) => {
+                    const fileElement = createPendingFileElement(file, index + 1);
+                    container.appendChild(fileElement);
+                });
+                
+            } catch (error) {
+                console.error('Error al mostrar archivos pendientes:', error);
+                document.getElementById('pending-files-container').innerHTML = 
+                    '<div class="error">Error al cargar archivos pendientes</div>';
+            }
+        }
         
-        <div class="section">
-            <h2>⚠️ Consideraciones Importantes</h2>
-            <ul>
-                <li><strong>Autenticación:</strong> Todos los endpoints requieren token de autenticación</li>
-                <li><strong>CORS:</strong> Asegúrate de que CORS esté configurado correctamente</li>
-                <li><strong>Manejo de errores:</strong> Implementa manejo de errores 404, 500, etc.</li>
-                <li><strong>Loading states:</strong> Muestra indicadores de carga mientras se cargan los archivos</li>
-                <li><strong>Responsive:</strong> Los archivos HTML son responsive, pero asegúrate de que tu contenedor también lo sea</li>
+        // Crear elemento de archivo pendiente
+        function createPendingFileElement(file, index) {
+            const metadata = file.metadata || {};
+            const div = document.createElement('div');
+            div.className = 'pending-file-item';
+            div.innerHTML = `
+                <div class="file-header">
+                    <h4>📄 Archivo ${index}</h4>
+                    <span class="status-badge pending">⏳ Pendiente</span>
+                </div>
+                <div class="file-info">
+                    <p><strong>👤 Paciente:</strong> ${metadata.patient_name || 'Sin nombre'}</p>
+                    <p><strong>📋 Orden:</strong> ${metadata.order_number || 'N/A'}</p>
+                    <p><strong>👨‍⚕️ Doctor:</strong> ${metadata.doctor_name || 'N/A'}</p>
+                    <p><strong>📅 Creado:</strong> ${new Date(metadata.created_at).toLocaleString()}</p>
+                    <p><strong>📏 Tamaño:</strong> ${(file.size / 1024).toFixed(2)} KB</p>
+            </div>
+                <div class="file-actions">
+                    <button onclick="viewFile('${file.filename}')" class="btn-view">👁️ Ver</button>
+                    <button onclick="markAsCompleted('${file.filename}')" class="btn-complete">✅ Completar</button>
+                    <button onclick="markAsCancelled('${file.filename}')" class="btn-cancel">❌ Cancelar</button>
+        </div>
+            `;
+            return div;
+        }
+        
+        // Marcar como completado
+        async function markAsCompleted(filename) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/${filename}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('✅ Archivo marcado como completado', 'success');
+                    await displayPendingFiles();
+                    await updateDashboard();
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al completar archivo:', error);
+                showMessage('Error al completar archivo: ' + error.message, 'error');
+            }
+        }
+        
+        // Marcar como cancelado
+        async function markAsCancelled(filename) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/file/${filename}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'cancelled' })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('❌ Archivo marcado como cancelado', 'success');
+                    await displayPendingFiles();
+                    await updateDashboard();
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al cancelar archivo:', error);
+                showMessage('Error al cancelar archivo: ' + error.message, 'error');
+            }
+        }
+        
+        // Ver archivo
+        function viewFile(filename) {
+            const url = `${API_BASE_URL}/file/${filename}`;
+            window.open(url, '_blank');
+        }
+        
+        // Actualizar dashboard
+        async function updateDashboard() {
+            try {
+                const stats = await getStatusStats();
+                
+                document.getElementById('total-files').textContent = stats.total_files;
+                document.getElementById('pending-count').textContent = stats.pending_count;
+                document.getElementById('completed-count').textContent = stats.completed_count;
+                document.getElementById('cancelled-count').textContent = stats.cancelled_count;
+                
+            } catch (error) {
+                console.error('Error al actualizar dashboard:', error);
+            }
+        }
+        
+        // Subir archivo HTML (ejemplo)
+        async function uploadHTMLFile(htmlContent, metadata) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/upload`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        html_content: htmlContent,
+                        original_filename: metadata.original_filename || 'reporte.html',
+                        patient_name: metadata.patient_name,
+                        order_number: metadata.order_number,
+                        doctor_name: metadata.doctor_name,
+                        notes: metadata.notes || '',
+                        prefix: 'frontend'
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    showMessage('✅ Archivo subido exitosamente', 'success');
+                    await displayPendingFiles();
+                    await updateDashboard();
+                    return result.data;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error('❌ Error al subir archivo:', error);
+                showMessage('Error al subir archivo: ' + error.message, 'error');
+                throw error;
+            }
+        }
+        
+        // Ejemplo de subida de archivo
+        function exampleUpload() {
+            const htmlContent = `
+                <html>
+                <head><title>Reporte de Laboratorio</title></head>
+                <body>
+                    <h1>Laboratorio Esperanza</h1>
+                    <h2>Reporte de Laboratorio</h2>
+                    <div>
+                        <p><strong>Paciente:</strong> Juan Pérez</p>
+                        <p><strong>Orden:</strong> ORD-001</p>
+                        <p><strong>Doctor:</strong> Dr. García</p>
+                        <p><strong>Fecha:</strong> ${new Date().toLocaleDateString()}</p>
+            </div>
+                    <div>
+                        <h3>Resultados:</h3>
+                        <ul>
+                            <li>Hemograma: Normal</li>
+                            <li>Química Sanguínea: Normal</li>
             </ul>
-        </div>
     </div>
 </body>
 </html>
-
-
-
-
-
-
+            `;
+            
+            const metadata = {
+                patient_name: 'Juan Pérez',
+                order_number: 'ORD-001',
+                doctor_name: 'Dr. García',
+                notes: 'Reporte generado desde el frontend',
+                original_filename: 'reporte_ejemplo.html'
+            };
+            
+            uploadHTMLFile(htmlContent, metadata);
+        }
+        
+        // Actualización automática cada 30 segundos
+        setInterval(async () => {
+            await displayPendingFiles();
+            await updateDashboard();
+        }, 30000);
+        
+        // Cargar datos iniciales
+        document.addEventListener('DOMContentLoaded', async () => {
+            await displayPendingFiles();
+            await updateDashboard();
+        });
+        
+        // Exponer funciones globalmente para los botones
+        window.markAsCompleted = markAsCompleted;
+        window.markAsCancelled = markAsCancelled;
+        window.viewFile = viewFile;
+        window.exampleUpload = exampleUpload;
+    </script>
+</body>
+</html>

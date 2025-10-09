@@ -9,6 +9,7 @@ from app.config import config
 from app.routes import auth_bp, patient_bp, lab_result_bp, payment_bp, sync_bp
 from app.routes.lab_tests_routes import lab_tests_bp
 from app.routes.lab_report_routes import lab_report_bp
+from app.routes.frontend_html_routes import frontend_html_bp
 from database import init_database, test_connection, get_database_info
 
 
@@ -41,6 +42,7 @@ def create_app(config_name=None):
     app.register_blueprint(sync_bp)
     app.register_blueprint(lab_tests_bp)
     app.register_blueprint(lab_report_bp)
+    app.register_blueprint(frontend_html_bp, url_prefix='/api/frontend-html')
     
     # Ruta de salud
     @app.route('/health')
@@ -74,6 +76,7 @@ def create_app(config_name=None):
                 'sync': '/api/sync',
                 'lab_tests': '/api/lab-tests',
                 'reports': '/api/reports',
+                'frontend_html': '/api/frontend-html',
                 'health': '/health'
             }
         }, 200
@@ -135,13 +138,14 @@ if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     debug = os.environ.get('DEBUG', 'True').lower() == 'true'
     
-    print(f"🚀 Iniciando Laboratorio Esperanza API en puerto {port}")
-    print(f"📊 Modo debug: {debug}")
-    print(f"🌐 URL: http://localhost:{port}")
-    print(f"❤️  Health check: http://localhost:{port}/health")
+    print(f"Iniciando Laboratorio Esperanza API en puerto {port}")
+    print(f"Modo debug: {debug}")
+    print(f"URL: http://localhost:{port}")
+    print(f"Health check: http://localhost:{port}/health")
     
     app.run(
         host='0.0.0.0',
         port=port,
-        debug=debug
+        debug=debug,
+        load_dotenv=False
     )

@@ -50,6 +50,13 @@ class Config:
     REPORTS_BACKUP_RETENTION_DAYS = int(os.environ.get('REPORTS_BACKUP_RETENTION_DAYS', 730))  # 2 años
     REPORTS_MAX_FILE_SIZE = int(os.environ.get('REPORTS_MAX_FILE_SIZE', 10 * 1024 * 1024))  # 10MB
     
+    # Configuración de archivos HTML del frontend
+    FRONTEND_HTML_FOLDER = os.environ.get('FRONTEND_HTML_FOLDER') or 'frontend_html'
+    FRONTEND_HTML_BASE_PATH = os.environ.get('FRONTEND_HTML_BASE_PATH') or os.path.join(os.getcwd(), 'frontend_html')
+    FRONTEND_HTML_MAX_FILE_SIZE = int(os.environ.get('FRONTEND_HTML_MAX_FILE_SIZE', 5 * 1024 * 1024))  # 5MB
+    FRONTEND_HTML_ALLOWED_EXTENSIONS = {'html', 'htm'}
+    FRONTEND_HTML_BACKUP_ENABLED = os.environ.get('FRONTEND_HTML_BACKUP_ENABLED', 'True').lower() == 'true'
+    
     # Configuración de CORS
     CORS_ORIGINS = os.environ.get('CORS_ORIGINS', '*').split(',')
     

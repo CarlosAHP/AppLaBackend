@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración Estados - Laboratorio Esperanza</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        .endpoint {
+            background-color: #e8f4fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .get { background-color: #007bff; color: white; }
+        .patch { background-color: #ffc107; color: black; }
+        .status-pending { color: #ffc107; font-weight: bold; }
+        .status-completed { color: #28a745; font-weight: bold; }
+        .status-cancelled { color: #dc3545; font-weight: bold; }
+        .example {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .warning { color: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Sistema de Estados - Archivos HTML</h1>
+            <h2>Laboratorio Esperanza - Gestión de Estados</h2>
+            <p>Ejemplos de uso de la API para manejo de estados de archivos HTML</p>
+        </div>
+
+        <div class="section">
+            <h3>📋 Estados Disponibles</h3>
+            <p>El sistema maneja tres estados principales:</p>
+            <ul>
+                <li><span class="status-pending">⏳ PENDING</span> - Archivo pendiente de procesamiento</li>
+                <li><span class="status-completed">✅ COMPLETED</span> - Archivo completado</li>
+                <li><span class="status-cancelled">❌ CANCELLED</span> - Archivo cancelado</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>📤 Subir Archivo con Estado Pendiente</h3>
+            <p>Al subir un archivo HTML, automáticamente se crea con estado "pending":</p>
+            
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>/api/frontend-html/upload</strong>
+            </div>
+
+            <div class="code-block">
+async function uploadHTMLWithStatus(htmlContent, metadata = {}) {
+    try {
+        const response = await fetch('/api/frontend-html/upload', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                html_content: htmlContent,
+                patient_name: metadata.patientName,
+                order_number: metadata.orderNumber,
+                doctor_name: metadata.doctorName,
+                notes: metadata.notes || '',
+                // El estado se asigna automáticamente como 'pending'
+                prefix: 'frontend'
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log('✅ Archivo subido con estado pendiente:', result.data);
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al subir archivo:', error);
+        throw error;
+    }
+}
+
+// Ejemplo de uso
+const htmlContent = `
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Reporte de Laboratorio&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Laboratorio Esperanza&lt;/h1&gt;
+    &lt;h2&gt;Reporte de Laboratorio&lt;/h2&gt;
+    &lt;div&gt;
+        &lt;p&gt;&lt;strong&gt;Paciente:&lt;/strong&gt; Juan Pérez&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Orden:&lt;/strong&gt; ORD-001&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Doctor:&lt;/strong&gt; Dr. García&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+`;
+
+const metadata = {
+    patientName: 'Juan Pérez',
+    orderNumber: 'ORD-001',
+    doctorName: 'Dr. García',
+    notes: 'Reporte generado desde el frontend'
+};
+
+uploadHTMLWithStatus(htmlContent, metadata)
+    .then(data => console.log('Archivo subido:', data))
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📋 Obtener Archivos Pendientes</h3>
+            <p>Obtener archivos en estado pendiente ordenados por fecha de creación (más antiguos primero):</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/frontend-html/pending</strong>
+            </div>
+
+            <div class="code-block">
+async function getPendingFiles(limit = 50) {
+    try {
+        const response = await fetch(`/api/frontend-html/pending?limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(`📋 Archivos pendientes encontrados: ${result.count}`);
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al obtener archivos pendientes:', error);
+        throw error;
+    }
+}
+
+// Ejemplo de uso
+getPendingFiles(20)
+    .then(files => {
+        console.log('📋 Archivos pendientes:');
+        files.forEach(file => {
+            const metadata = file.metadata || {};
+            console.log(`  📄 ${file.filename}`);
+            console.log(`    👤 Paciente: ${metadata.patient_name || 'N/A'}`);
+            console.log(`    📋 Orden: ${metadata.order_number || 'N/A'}`);
+            console.log(`    📅 Creado: ${metadata.created_at || file.created_at}`);
+            console.log(`    ⏳ Estado: ${metadata.status || 'unknown'}`);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>✅ Obtener Archivos Completados</h3>
+            <p>Obtener archivos en estado completado:</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/frontend-html/completed</strong>
+            </div>
+
+            <div class="code-block">
+async function getCompletedFiles(limit = 50) {
+    try {
+        const response = await fetch(`/api/frontend-html/completed?limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(`✅ Archivos completados encontrados: ${result.count}`);
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al obtener archivos completados:', error);
+        throw error;
+    }
+}
+
+// Ejemplo de uso
+getCompletedFiles(20)
+    .then(files => {
+        console.log('✅ Archivos completados:');
+        files.forEach(file => {
+            const metadata = file.metadata || {};
+            console.log(`  📄 ${file.filename}`);
+            console.log(`    👤 Paciente: ${metadata.patient_name || 'N/A'}`);
+            console.log(`    📋 Orden: ${metadata.order_number || 'N/A'}`);
+            console.log(`    ✅ Completado: ${metadata.completed_at || 'N/A'}`);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔄 Actualizar Estado de Archivo</h3>
+            <p>Cambiar el estado de un archivo HTML:</p>
+            
+            <div class="endpoint">
+                <span class="method patch">PATCH</span>
+                <strong>/api/frontend-html/file/&lt;filename&gt;/status</strong>
+            </div>
+
+            <div class="code-block">
+async function updateFileStatus(filename, newStatus) {
+    try {
+        const response = await fetch(`/api/frontend-html/file/${filename}/status`, {
+            method: 'PATCH',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                status: newStatus
+            })
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(`✅ Estado actualizado: ${result.message}`);
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al actualizar estado:', error);
+        throw error;
+    }
+}
+
+// Ejemplos de uso
+const filename = 'frontend_reporte_20240115_143022_abc12345.html';
+
+// Marcar como completado
+updateFileStatus(filename, 'completed')
+    .then(data => console.log('Archivo completado:', data))
+    .catch(error => console.error('Error:', error));
+
+// Marcar como cancelado
+updateFileStatus(filename, 'cancelled')
+    .then(data => console.log('Archivo cancelado:', data))
+    .catch(error => console.error('Error:', error));
+
+// Volver a pendiente
+updateFileStatus(filename, 'pending')
+    .then(data => console.log('Archivo pendiente:', data))
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🔍 Obtener Archivos por Estado</h3>
+            <p>Obtener archivos filtrados por estado específico:</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/frontend-html/status?status=&lt;status&gt;</strong>
+            </div>
+
+            <div class="code-block">
+async function getFilesByStatus(status, limit = 50) {
+    try {
+        const response = await fetch(`/api/frontend-html/status?status=${status}&limit=${limit}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(`📊 Archivos con estado '${status}': ${result.count}`);
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al obtener archivos por estado:', error);
+        throw error;
+    }
+}
+
+// Ejemplos de uso
+getFilesByStatus('pending', 20)
+    .then(files => console.log('Archivos pendientes:', files))
+    .catch(error => console.error('Error:', error));
+
+getFilesByStatus('completed', 20)
+    .then(files => console.log('Archivos completados:', files))
+    .catch(error => console.error('Error:', error));
+
+getFilesByStatus('cancelled', 20)
+    .then(files => console.log('Archivos cancelados:', files))
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>📊 Estadísticas de Estados</h3>
+            <p>Obtener estadísticas detalladas por estado:</p>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>/api/frontend-html/status-stats</strong>
+            </div>
+
+            <div class="code-block">
+async function getStatusStats() {
+    try {
+        const response = await fetch('/api/frontend-html/status-stats', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+            return result.data;
+        } else {
+            throw new Error(result.message);
+        }
+    } catch (error) {
+        console.error('❌ Error al obtener estadísticas:', error);
+        throw error;
+    }
+}
+
+// Ejemplo de uso
+getStatusStats()
+    .then(stats => {
+        console.log('📊 Estadísticas de estados:');
+        console.log(`📄 Total de archivos: ${stats.total_files}`);
+        console.log(`⏳ Pendientes: ${stats.pending_count}`);
+        console.log(`✅ Completados: ${stats.completed_count}`);
+        console.log(`❌ Cancelados: ${stats.cancelled_count}`);
+        
+        console.log('📊 Distribución por estado:');
+        Object.entries(stats.by_status).forEach(([status, count]) => {
+            console.log(`  ${status}: ${count} archivos`);
+        });
+    })
+    .catch(error => console.error('Error:', error));
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🎯 Ejemplo Completo de Integración</h3>
+            <p>Clase completa para manejar estados de archivos HTML:</p>
+            
+            <div class="code-block">
+class HTMLStatusManager {
+    constructor(apiBaseUrl, token) {
+        this.apiBaseUrl = apiBaseUrl;
+        this.token = token;
+        this.defaultHeaders = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        };
+    }
+
+    async uploadHTML(htmlContent, metadata = {}) {
+        const response = await fetch(`${this.apiBaseUrl}/upload`, {
+            method: 'POST',
+            headers: this.defaultHeaders,
+            body: JSON.stringify({
+                html_content: htmlContent,
+                patient_name: metadata.patientName,
+                order_number: metadata.orderNumber,
+                doctor_name: metadata.doctorName,
+                notes: metadata.notes || '',
+                prefix: 'frontend'
+            })
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    async getPendingFiles(limit = 50) {
+        const response = await fetch(`${this.apiBaseUrl}/pending?limit=${limit}`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    async getCompletedFiles(limit = 50) {
+        const response = await fetch(`${this.apiBaseUrl}/completed?limit=${limit}`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    async getFilesByStatus(status, limit = 50) {
+        const response = await fetch(`${this.apiBaseUrl}/status?status=${status}&limit=${limit}`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    async updateFileStatus(filename, newStatus) {
+        const response = await fetch(`${this.apiBaseUrl}/file/${filename}/status`, {
+            method: 'PATCH',
+            headers: this.defaultHeaders,
+            body: JSON.stringify({ status: newStatus })
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    async getStatusStats() {
+        const response = await fetch(`${this.apiBaseUrl}/status-stats`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+        });
+
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        return result.data;
+    }
+
+    // Método de conveniencia para marcar como completado
+    async markAsCompleted(filename) {
+        return await this.updateFileStatus(filename, 'completed');
+    }
+
+    // Método de conveniencia para marcar como cancelado
+    async markAsCancelled(filename) {
+        return await this.updateFileStatus(filename, 'cancelled');
+    }
+
+    // Método de conveniencia para volver a pendiente
+    async markAsPending(filename) {
+        return await this.updateFileStatus(filename, 'pending');
+    }
+}
+
+// Uso del manager
+const statusManager = new HTMLStatusManager('http://localhost:5000/api/frontend-html', 'your-jwt-token');
+
+// Ejemplo de flujo completo
+async function ejemploCompleto() {
+    try {
+        // 1. Subir archivo HTML (automáticamente se crea como pendiente)
+        const htmlContent = '&lt;html&gt;&lt;body&gt;&lt;h1&gt;Mi Reporte&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;';
+        const uploadResult = await statusManager.uploadHTML(htmlContent, {
+            patientName: 'Juan Pérez',
+            orderNumber: 'ORD-001',
+            doctorName: 'Dr. García',
+            notes: 'Reporte de prueba'
+        });
+        console.log('📤 Archivo subido:', uploadResult.filename);
+
+        // 2. Obtener archivos pendientes
+        const pendingFiles = await statusManager.getPendingFiles(10);
+        console.log('⏳ Archivos pendientes:', pendingFiles.length);
+
+        // 3. Marcar como completado
+        await statusManager.markAsCompleted(uploadResult.filename);
+        console.log('✅ Archivo marcado como completado');
+
+        // 4. Obtener archivos completados
+        const completedFiles = await statusManager.getCompletedFiles(10);
+        console.log('✅ Archivos completados:', completedFiles.length);
+
+        // 5. Obtener estadísticas
+        const stats = await statusManager.getStatusStats();
+        console.log('📊 Estadísticas:', stats);
+
+    } catch (error) {
+        console.error('❌ Error en ejemplo:', error);
+    }
+}
+
+// Ejecutar ejemplo
+ejemploCompleto();
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🎯 Casos de Uso del Frontend</h3>
+            <p>Ejemplos de cómo usar el sistema de estados en diferentes escenarios:</p>
+            
+            <div class="example">
+                <h4>📋 Escenario 1: Lista de Archivos Pendientes</h4>
+                <p>Mostrar archivos pendientes en la interfaz principal:</p>
+                <div class="code-block">
+// Obtener archivos pendientes para mostrar en la interfaz
+async function loadPendingFiles() {
+    try {
+        const pendingFiles = await statusManager.getPendingFiles(20);
+        
+        // Mostrar en la interfaz
+        const container = document.getElementById('pending-files');
+        container.innerHTML = '';
+        
+        pendingFiles.forEach(file => {
+            const metadata = file.metadata || {};
+            const fileElement = document.createElement('div');
+            fileElement.className = 'file-item';
+            fileElement.innerHTML = `
+                &lt;div class="file-info"&gt;
+                    &lt;h4&gt;${metadata.patient_name || 'Sin nombre'}&lt;/h4&gt;
+                    &lt;p&gt;Orden: ${metadata.order_number || 'N/A'}&lt;/p&gt;
+                    &lt;p&gt;Doctor: ${metadata.doctor_name || 'N/A'}&lt;/p&gt;
+                    &lt;p&gt;Creado: ${new Date(metadata.created_at).toLocaleString()}&lt;/p&gt;
+                &lt;/div&gt;
+                &lt;div class="file-actions"&gt;
+                    &lt;button onclick="markAsCompleted('${file.filename}')"&gt;✅ Completar&lt;/button&gt;
+                    &lt;button onclick="markAsCancelled('${file.filename}')"&gt;❌ Cancelar&lt;/button&gt;
+                &lt;/div&gt;
+            `;
+            container.appendChild(fileElement);
+        });
+    } catch (error) {
+        console.error('Error al cargar archivos pendientes:', error);
+    }
+}
+                </div>
+            </div>
+
+            <div class="example">
+                <h4>✅ Escenario 2: Procesar Archivo</h4>
+                <p>Marcar un archivo como completado después de procesarlo:</p>
+                <div class="code-block">
+// Función para procesar un archivo
+async function processFile(filename) {
+    try {
+        // Aquí iría la lógica de procesamiento del archivo
+        console.log(`Procesando archivo: ${filename}`);
+        
+        // Simular procesamiento
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Marcar como completado
+        await statusManager.markAsCompleted(filename);
+        console.log('✅ Archivo procesado y marcado como completado');
+        
+        // Recargar la lista de archivos pendientes
+        await loadPendingFiles();
+        
+    } catch (error) {
+        console.error('Error al procesar archivo:', error);
+    }
+}
+                </div>
+            </div>
+
+            <div class="example">
+                <h4>📊 Escenario 3: Dashboard de Estados</h4>
+                <p>Mostrar estadísticas en tiempo real:</p>
+                <div class="code-block">
+// Actualizar dashboard con estadísticas
+async function updateDashboard() {
+    try {
+        const stats = await statusManager.getStatusStats();
+        
+        // Actualizar contadores en la interfaz
+        document.getElementById('total-files').textContent = stats.total_files;
+        document.getElementById('pending-count').textContent = stats.pending_count;
+        document.getElementById('completed-count').textContent = stats.completed_count;
+        document.getElementById('cancelled-count').textContent = stats.cancelled_count;
+        
+        // Actualizar gráfico de barras
+        updateStatusChart(stats.by_status);
+        
+    } catch (error) {
+        console.error('Error al actualizar dashboard:', error);
+    }
+}
+
+// Actualizar dashboard cada 30 segundos
+setInterval(updateDashboard, 30000);
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3>🎉 ¡Sistema de Estados Listo!</h3>
+            <p class="success">El sistema de estados está completamente implementado y listo para usar.</p>
+            <p>Características implementadas:</p>
+            <ul>
+                <li>✅ <strong>3 estados</strong>: pending, completed, cancelled</li>
+                <li>✅ <strong>Actualización de estados</strong> en tiempo real</li>
+                <li>✅ <strong>Filtrado por estado</strong> con ordenamiento</li>
+                <li>✅ <strong>Estadísticas detalladas</strong> por estado</li>
+                <li>✅ <strong>5 nuevos endpoints</strong> de API</li>
+                <li>✅ <strong>Ordenamiento automático</strong> por fecha</li>
+                <li>✅ <strong>Metadatos completos</strong> con timestamps</li>
+                <li>✅ <strong>Integración frontend</strong> lista</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
