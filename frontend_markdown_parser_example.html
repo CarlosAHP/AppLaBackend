@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parser de Interpretación Médica - Markdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .interpretation-container {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .section {
+            margin: 20px 0;
+        }
+        .section h3 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+        .values-list {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .urgency {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .urgency.high {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .urgency.medium {
+            background: #fff3cd;
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        .urgency.low {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .recommendations {
+            background: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .disclaimer {
+            background: #f8f9fa;
+            border-left: 4px solid #6c757d;
+            padding: 10px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <h1>🏥 Parser de Interpretación Médica</h1>
+    <p>Este ejemplo muestra cómo parsear la respuesta de la API de interpretación médica usando Markdown.</p>
+
+    <div class="interpretation-container">
+        <h2>Interpretación Médica</h2>
+        <div id="parsed-content">
+            <!-- El contenido parseado se insertará aquí -->
+        </div>
+    </div>
+
+    <script>
+        // Función para parsear Markdown básico
+        function parseMarkdown(text) {
+            return text
+                // Títulos (##)
+                .replace(/^\*\*(.*?)\*\*$/gm, '<h3>$1</h3>')
+                // Listas con viñetas (-)
+                .replace(/^\- (.*)$/gm, '<li>$1</li>')
+                // Texto en negrita (**texto**)
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                // Saltos de línea
+                .replace(/\n/g, '<br>')
+                // Agrupar listas
+                .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+        }
+
+        // Función para detectar urgencia
+        function getUrgencyClass(urgencyText) {
+            if (urgencyText.toLowerCase().includes('alta')) {
+                return 'high';
+            } else if (urgencyText.toLowerCase().includes('media')) {
+                return 'medium';
+            } else if (urgencyText.toLowerCase().includes('baja')) {
+                return 'low';
+            }
+            return 'low';
+        }
+
+        // Función para parsear la interpretación completa
+        function parseMedicalInterpretation(interpretation) {
+            const sections = interpretation.split(/\*\*(.*?)\*\*/);
+            let html = '';
+
+            for (let i = 0; i < sections.length; i += 2) {
+                const title = sections[i + 1];
+                const content = sections[i + 2];
+
+                if (title && content) {
+                    switch (title.trim()) {
+                        case 'RESUMEN CLÍNICO':
+                            html += `<div class="section">
+                                <h3>📋 ${title}</h3>
+                                <p>${content.trim()}</p>
+                            </div>`;
+                            break;
+
+                        case 'VALORES ANORMALES':
+                            const valuesHtml = content.trim()
+                                .replace(/^\- (.*)$/gm, '<li>$1</li>')
+                                .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+                            html += `<div class="section">
+                                <h3>⚠️ ${title}</h3>
+                                <div class="values-list">${valuesHtml}</div>
+                            </div>`;
+                            break;
+
+                        case 'INTERPRETACIÓN':
+                            const interpretationHtml = content.trim()
+                                .replace(/^\*\*(.*?)\*\*:/gm, '<strong>$1:</strong>')
+                                .replace(/^\- (.*)$/gm, '<li>$1</li>')
+                                .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+                            html += `<div class="section">
+                                <h3>🔬 ${title}</h3>
+                                <div>${interpretationHtml}</div>
+                            </div>`;
+                            break;
+
+                        case 'RECOMENDACIONES':
+                            const recommendationsHtml = content.trim()
+                                .replace(/^\d+\.\s*(.*)$/gm, '<li>$1</li>')
+                                .replace(/^\- (.*)$/gm, '<li>$1</li>')
+                                .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>');
+                            html += `<div class="section">
+                                <h3>💡 ${title}</h3>
+                                <div class="recommendations">${recommendationsHtml}</div>
+                            </div>`;
+                            break;
+
+                        case 'URGENCIA':
+                            const urgencyClass = getUrgencyClass(content);
+                            html += `<div class="section">
+                                <h3>🚨 ${title}</h3>
+                                <div class="urgency ${urgencyClass}">${content.trim()}</div>
+                            </div>`;
+                            break;
+                    }
+                }
+            }
+
+            // Agregar disclaimer
+            html += `<div class="disclaimer">
+                <strong>⚠️ Importante:</strong> Esta interpretación es solo para fines informativos. 
+                El paciente debe consultar con su médico para diagnóstico y tratamiento.
+            </div>`;
+
+            return html;
+        }
+
+        // Ejemplo de uso con la respuesta real de la API
+        const exampleResponse = {
+            "success": true,
+            "interpretation": `**RESUMEN CLÍNICO**
+
+La paciente María González, de 45 años, presenta anemia (hemoglobina y hematocrito bajos), leucocitosis (aumento de glóbulos blancos), hiperglucemia (glucosa elevada) y dislipidemia (colesterol total y triglicéridos elevados).
+
+**VALORES ANORMALES**
+
+- Hemoglobina: 10.5 g/dl (Normal: 12-16 g/dl)
+- Hematocrito: 32% (Normal: 36-46%)
+- Leucocitos: 12,500 /μL (Normal: 4,000-11,000 /μL)
+- Glucosa: 140 mg/dl (Normal: 70-100 mg/dl)
+- Colesterol Total: 220 mg/dl (Normal: <200 mg/dl)
+- Triglicéridos: 180 mg/dl (Normal: <150 mg/dl)
+
+**INTERPRETACIÓN**
+
+- **Anemia (Hemoglobina y Hematocrito bajos):** La anemia indica una disminución en la capacidad de la sangre para transportar oxígeno.
+- **Leucocitosis (Leucocitos elevados):** El aumento de glóbulos blancos sugiere una respuesta inflamatoria o infecciosa.
+- **Hiperglucemia (Glucosa elevada):** Un nivel de glucosa de 140 mg/dl sugiere una posible alteración en la regulación de la glucosa.
+
+**RECOMENDACIONES**
+
+1. **Consulta médica:** María González debe consultar a su médico para una evaluación completa.
+2. **Pruebas adicionales:** Se recomiendan las siguientes pruebas para una mejor comprensión del cuadro clínico.
+3. **Modificación del estilo de vida:** Independientemente de los resultados de las pruebas adicionales, se recomienda dieta, ejercicio y control de peso.
+
+**URGENCIA**
+
+Media. Es crucial que la paciente consulte a su médico en un plazo razonable para una evaluación más exhaustiva.`,
+            "model_used": "gemini-2.0-flash",
+            "patient_info": {"age": 45, "gender": "F"},
+            "timestamp": "2025-10-09T21:04:33.498502Z"
+        };
+
+        // Parsear y mostrar la interpretación
+        if (exampleResponse.success) {
+            const parsedHtml = parseMedicalInterpretation(exampleResponse.interpretation);
+            document.getElementById('parsed-content').innerHTML = parsedHtml;
+        }
+
+        // Función para usar con la API real
+        async function interpretLabResults(htmlContent, patientInfo) {
+            try {
+                const response = await fetch('/api/medical-interpret', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        html_content: htmlContent,
+                        patient_info: patientInfo
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    const parsedHtml = parseMedicalInterpretation(data.interpretation);
+                    return {
+                        success: true,
+                        html: parsedHtml,
+                        raw: data.interpretation
+                    };
+                } else {
+                    return {
+                        success: false,
+                        error: data.message
+                    };
+                }
+            } catch (error) {
+                return {
+                    success: false,
+                    error: error.message
+                };
+            }
+        }
+
+        // Ejemplo de uso con la API
+        console.log('Para usar con la API real:');
+        console.log('interpretLabResults(htmlContent, patientInfo).then(result => {');
+        console.log('    if (result.success) {');
+        console.log('        document.getElementById("interpretation").innerHTML = result.html;');
+        console.log('    }');
+        console.log('});');
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -14,7 +14,7 @@ class Config:
     DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
     
     # Configuración de base de datos
-    DATABASE_URL = os.environ.get('DATABASE_URL') or 'postgresql://admin:MgYNGdCzjIoTX4MNnmL2oQBDZkhUmKQN@dpg-d36akq0gjchc73c5aumg-a.oregon-postgres.render.com/dbesperanza'
+    DATABASE_URL = os.environ.get('DATABASE_URL') or 'postgresql://admin:2qPzrzOn1YvrHoBGP6r3isc8QWXOYM7r@dpg-d3rq3reuk2gs73893l5g-a.oregon-postgres.render.com/dbesperanza_c9g0'
     SQLALCHEMY_DATABASE_URI = DATABASE_URL
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ENGINE_OPTIONS = {
@@ -100,7 +100,7 @@ class DevelopmentConfig(Config):
     """Configuración para desarrollo"""
     
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'postgresql://admin:MgYNGdCzjIoTX4MNnmL2oQBDZkhUmKQN@dpg-d36akq0gjchc73c5aumg-a.oregon-postgres.render.com/dbesperanza'
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'postgresql://admin:2qPzrzOn1YvrHoBGP6r3isc8QWXOYM7r@dpg-d3rq3reuk2gs73893l5g-a.oregon-postgres.render.com/dbesperanza_c9g0'
     LOG_LEVEL = 'DEBUG'
 
 

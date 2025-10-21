@@ -10,6 +10,7 @@ from app.routes import auth_bp, patient_bp, lab_result_bp, payment_bp, sync_bp
 from app.routes.lab_tests_routes import lab_tests_bp
 from app.routes.lab_report_routes import lab_report_bp
 from app.routes.frontend_html_routes import frontend_html_bp
+from app.routes.medical_interpretation_routes import medical_interpretation_bp
 from database import init_database, test_connection, get_database_info
 
 
@@ -43,6 +44,7 @@ def create_app(config_name=None):
     app.register_blueprint(lab_tests_bp)
     app.register_blueprint(lab_report_bp)
     app.register_blueprint(frontend_html_bp, url_prefix='/api/frontend-html')
+    app.register_blueprint(medical_interpretation_bp)
     
     # Ruta de salud
     @app.route('/health')
@@ -77,6 +79,7 @@ def create_app(config_name=None):
                 'lab_tests': '/api/lab-tests',
                 'reports': '/api/reports',
                 'frontend_html': '/api/frontend-html',
+                'medical_interpret': '/api/medical-interpret',
                 'health': '/health'
             }
         }, 200

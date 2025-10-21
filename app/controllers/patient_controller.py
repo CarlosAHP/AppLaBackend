@@ -5,14 +5,12 @@ Controlador para manejar las peticiones HTTP de pacientes
 from flask import request, jsonify, g
 from typing import Dict, Any
 from app.services.patient_service import PatientService
-from app.middleware.auth_middleware import token_required
 
 
 class PatientController:
     """Controlador para operaciones de pacientes"""
     
     @staticmethod
-    @token_required
     def create_patient():
         """
         Crear un nuevo paciente
@@ -58,7 +56,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def get_patient_by_id(patient_id):
         """
         Obtener paciente por ID
@@ -81,7 +78,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def get_patient_by_code(patient_code):
         """
         Obtener paciente por código
@@ -104,7 +100,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def get_patient_by_dpi(dpi):
         """
         Obtener paciente por DPI
@@ -127,7 +122,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def search_patients():
         """
         Buscar pacientes
@@ -161,7 +155,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def get_all_patients():
         """
         Obtener todos los pacientes con paginación
@@ -193,7 +186,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def update_patient(patient_id):
         """
         Actualizar un paciente
@@ -227,7 +219,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def deactivate_patient(patient_id):
         """
         Desactivar un paciente
@@ -250,7 +241,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def activate_patient(patient_id):
         """
         Reactivar un paciente
@@ -273,7 +263,6 @@ class PatientController:
             }), 500
     
     @staticmethod
-    @token_required
     def get_patient_statistics():
         """
         Obtener estadísticas de pacientes

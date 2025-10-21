@@ -43,10 +43,10 @@ def create_tables():
     
     try:
         db.create_all()
-        print("✅ Tablas creadas exitosamente")
+        print("Tablas creadas exitosamente")
         return True
     except Exception as e:
-        print(f"❌ Error al crear tablas: {str(e)}")
+        print(f"Error al crear tablas: {str(e)}")
         return False
 
 
@@ -54,12 +54,13 @@ def test_connection():
     """Probar la conexión a la base de datos"""
     try:
         # Intentar una consulta simple
-        result = db.session.execute('SELECT 1').fetchone()
+        from sqlalchemy import text
+        result = db.session.execute(text('SELECT 1')).fetchone()
         if result:
-            print("✅ Conexión a la base de datos exitosa")
+            print("Conexion a la base de datos exitosa")
             return True
     except Exception as e:
-        print(f"❌ Error de conexión a la base de datos: {str(e)}")
+        print(f"Error de conexion a la base de datos: {str(e)}")
         return False
     
     return False
@@ -69,14 +70,15 @@ def get_database_info():
     """Obtener información de la base de datos"""
     try:
         # Obtener información de la conexión
-        result = db.session.execute("""
+        from sqlalchemy import text
+        result = db.session.execute(text("""
             SELECT 
                 current_database() as database_name,
                 current_user as user_name,
                 version() as version,
                 inet_server_addr() as server_address,
                 inet_server_port() as server_port
-        """).fetchone()
+        """)).fetchone()
         
         if result:
             return {
@@ -88,7 +90,7 @@ def get_database_info():
                 'connection_string': db.engine.url.__to_string__(hide_password=True)
             }
     except Exception as e:
-        print(f"❌ Error al obtener información de la base de datos: {str(e)}")
+        print(f"Error al obtener informacion de la base de datos: {str(e)}")
         return None
     
     return None
