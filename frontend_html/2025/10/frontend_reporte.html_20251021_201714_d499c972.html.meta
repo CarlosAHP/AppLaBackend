@@ -1,0 +1,54 @@
+{
+  "patient_name": "carlos alfonso hernandez perez",
+  "order_number": "P20251021546",
+  "doctor_name": "MARIA SINAY",
+  "notes": "",
+  "patient_age": 22,
+  "patient_gender": "F",
+  "reception_date": "2025-10-22",
+  "tests": [
+    {
+      "name": "hematologia_dengue",
+      "filename": "hematologia_dengue.html"
+    },
+    {
+      "name": "inmunologia_dengue",
+      "filename": "inmunologia_dengue.html"
+    },
+    {
+      "name": "orina_completa_dengue",
+      "filename": "orina_completa_dengue.html"
+    }
+  ],
+  "created_by": "doctor1",
+  "source": "frontend",
+  "prefix": "frontend",
+  "uploaded_at": "2025-10-21T20:17:14.033913",
+  "file_size": 26043,
+  "status": "pending",
+  "created_at": "2025-10-22T02:17:11.553Z",
+  "edit_count": 2,
+  "is_modified": true,
+  "edit_history": [
+    {
+      "edited_by": "doctor1",
+      "edited_at": "2025-10-22T02:17:47.286Z",
+      "edit_number": 1,
+      "changes_summary": "Archivo modificado"
+    },
+    {
+      "edit_date": "2025-10-21T20:17:48.312434",
+      "edited_by": "doctor1",
+      "edit_reason": "Actualización de contenido",
+      "file_size_before": 25054,
+      "file_size_after": 26043,
+      "changes_summary": "Contenido HTML actualizado"
+    }
+  ],
+  "updated_by": "doctor1",
+  "updated_at": "2025-10-21T20:17:48.312459",
+  "last_edited_by": "doctor1",
+  "last_edit_date": "2025-10-21T20:17:48.312434",
+  "original_created_by": "doctor1",
+  "modification_timestamp": "2025-10-22T02:17:47.286Z"
+}

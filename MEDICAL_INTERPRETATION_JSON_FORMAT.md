@@ -219,3 +219,4 @@ function displayMedicalInterpretation(response) {
 - Los valores de urgencia van de "Baja" a "Crítica"
 - La confianza del análisis se expresa como porcentaje
 - Todos los arrays pueden estar vacíos si no aplican
+

@@ -18,6 +18,13 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
+#recuerdate de mia
+from transformers import AutoModel, AutoTokenizer
+model_name = "Drbellamy/labrador"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModel.from_pretrained(model_name)
+
+
 class MedicalAI:
     def __init__(self):
         self.model_version = "MedicalAI-v2.1.0"
