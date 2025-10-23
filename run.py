@@ -3,7 +3,11 @@ Archivo principal para ejecutar la aplicación
 """
 
 import os
+from dotenv import load_dotenv
 from flask import Flask
+
+# Cargar variables de entorno desde .env
+load_dotenv()
 from flask_cors import CORS
 from app.config import config
 from app.routes import auth_bp, patient_bp, lab_result_bp, payment_bp, sync_bp
@@ -33,7 +37,13 @@ def create_app(config_name=None):
     
     # Inicializar base de datos
     db = init_database(app)
-    CORS(app, origins=app.config['CORS_ORIGINS'])
+    
+    # Configurar CORS con opciones más específicas
+    CORS(app, 
+         origins=['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:3001'],
+         methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+         allow_headers=['Content-Type', 'Authorization', 'X-Requested-With'],
+         supports_credentials=True)
     
     # Registrar blueprints
     app.register_blueprint(auth_bp)
